@@ -1,0 +1,11 @@
+{
+  "name": "SutaHub-V2",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "SutaHub": {
+        "$path": "src"
+      }
+    }
+  }
+}

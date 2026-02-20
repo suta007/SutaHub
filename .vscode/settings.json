@@ -1,0 +1,58 @@
+{
+    // --- Luau Language Server Settings (Cleaned & Globals Added) ---
+    "luau-lsp.require.mode": "relativeToFile",
+    "luau-lsp.types.roblox": true,
+    "luau-lsp.completion.imports.enabled": true,
+    "luau-lsp.diagnostics.strictMode": true,
+    "luau-lsp.completion.autocompleteEnd": true,
+    
+    // --- แก้ Error: Undefined Globals สำหรับสาย Executor ---
+    "luau-lsp.diagnostics.globals": [
+        "getgenv",
+        "loadstring",
+        "identifyexecutor",
+        "getexecutorname",
+        "setclipboard",
+        "hookfunction",
+        "newcclosure",
+        "checkclosure",
+        "getnamecallmethod",
+        "setnamecallmethod",
+        "HttpGet",
+        "HttpGetAsync"
+    ],
+
+    // --- ปิดการเชื่อมต่อ Rojo/Sourcemap เพื่อแก้ Error ---
+    "luau-lsp.sourcemap.enabled": false,
+    "luau-lsp.ignoreDirectoryConfiguration": true,
+    "luau-lsp.platform.type": "standard",
+
+    // --- Formatting (StyLua) ---
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "JohnnyMorganz.stylua",
+    "[luau]": {
+        "editor.defaultFormatter": "JohnnyMorganz.stylua"
+    },
+
+    // --- UI & Experience ---
+    "errorLens.enabled": true,
+    "errorLens.fontStyleItalic": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+
+    // --- File Associations ---
+    "files.associations": {
+        "*.lua": "luau"
+    },
+
+    // --- Files to Ignore ---
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/desktop.ini": true,
+        "backup": true
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}
