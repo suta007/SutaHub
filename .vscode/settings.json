@@ -1,13 +1,14 @@
 {
-    // --- Luau Language Server Settings (Cleaned & Globals Added) ---
-    "luau-lsp.require.mode": "relativeToFile",
+    "luau-lsp.require.mode": "relative",
     "luau-lsp.types.roblox": true,
     "luau-lsp.completion.imports.enabled": true,
     "luau-lsp.diagnostics.strictMode": true,
     "luau-lsp.completion.autocompleteEnd": true,
-    
-    // --- แก้ Error: Undefined Globals สำหรับสาย Executor ---
+    "luau-lsp.types.definitionFiles": [
+        ".vscode/delta.d.luau"
+    ],
     "luau-lsp.diagnostics.globals": [
+        "game", // เพิ่มตัวนี้เพื่อแก้ปัญหา game:HttpGet
         "getgenv",
         "loadstring",
         "identifyexecutor",
@@ -18,41 +19,27 @@
         "checkclosure",
         "getnamecallmethod",
         "setnamecallmethod",
-        "HttpGet",
-        "HttpGetAsync"
+        "HttpGet", // สำหรับเรียกแบบ HttpGet(url) ในบาง Executor
+        "HttpGetAsync",
+        "request",
+        "readfile",
+        "writefile",
+        "isfolder", // เพิ่มเผื่อใช้เช็คโฟลเดอร์เก็บข้อมูลฟาร์ม
+        "makefolder",
+        "listfiles"
     ],
-
-    // --- ปิดการเชื่อมต่อ Rojo/Sourcemap เพื่อแก้ Error ---
+    "luau-lsp.diagnostics.no-unused-variable": true,
     "luau-lsp.sourcemap.enabled": false,
     "luau-lsp.ignoreDirectoryConfiguration": true,
     "luau-lsp.platform.type": "standard",
-
-    // --- Formatting (StyLua) ---
+    // --- การตั้งค่าอื่นๆ ของพี่เอฟที่เหลือคงเดิมได้เลยค่ะ ---
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "JohnnyMorganz.stylua",
     "[luau]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua"
     },
-
-    // --- UI & Experience ---
     "errorLens.enabled": true,
-    "errorLens.fontStyleItalic": true,
-    "editor.bracketPairColorization.enabled": true,
-    "editor.guides.bracketPairs": "active",
-
-    // --- File Associations ---
     "files.associations": {
         "*.lua": "luau"
-    },
-
-    // --- Files to Ignore ---
-    "files.exclude": {
-        "**/.git": true,
-        "**/.DS_Store": true,
-        "**/desktop.ini": true,
-        "backup": true
-    },
-    "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }

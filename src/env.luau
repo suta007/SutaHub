@@ -1,11 +1,17 @@
 --!strict
 -- src/env.luau
 
-local env: any = getgenv and getgenv() or shared
+local getgenv = getgenv :: any
+local loadstring = loadstring :: any
+local game = game :: any
 
-getgenv().EF_Script = true :: boolean
+print("🚀 SutaHub: เข้าสู่ระบบหลัก (Main) แล้วค่ะพี่เอฟ!")
 
-getgenv().EF_ShopKey = {
+local env = (typeof(getgenv) == "function" and getgenv()) or shared or _G
+
+env.EF_Script = true :: boolean
+
+env.EF_ShopKey = {
 	Seed = "ROOT/SeedStocks/Shop/Stocks",
 	Daily = "ROOT/SeedStocks/Daily Deals/Stocks",
 	Gear = "ROOT/GearStock/Stocks",

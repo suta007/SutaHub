@@ -1,18 +1,21 @@
 --!strict
 -- src/main.luau
 
+local env = (typeof(getgenv) == "function" and getgenv()) or shared or _G
+
 print("🚀 SutaHub: เข้าสู่ระบบหลัก (Main) แล้วค่ะพี่เอฟ!")
 
-local env: any = getgenv and getgenv() or shared
 local config = env.SutaHubConfig
 
 if not config or type(config.BaseUrl) ~= "string" then
-    error("❌ SutaHub [Error]: ไม่พบ BaseUrl ค่ะ รบกวนรันสคริปต์ผ่าน loader.luau นะคะ")
+	error(
+		"❌ SutaHub [Error]: ไม่พบ BaseUrl ค่ะ รบกวนรันสคริปต์ผ่าน loader.luau นะคะ"
+	)
 end
 
 -- 1. โหลดโมดูล GitHub ขึ้นมาเพื่อใช้เรียกไฟล์อื่นๆ ในโปรเจกต์
 local githubUrl: string = `{config.BaseUrl}src/utils/github.luau`
-local GitHub = loadstring(game:HttpGet(githubUrl))()
+local GitHub = loadstring(game:HttpGet(githubUrl) :: any)()
 
 print("🎨 SutaHub: กำลังสร้าง UI...")
 
@@ -48,9 +51,9 @@ print("✅ SutaHub: โหลดเสร็จสมบูรณ์ พร้�
 
 -- สั่งแสดง Notification ให้ผู้ใช้รู้ว่าสคริปต์พร้อมใช้งาน
 if Fluent and Fluent.Notify then
-    Fluent:Notify({
-        Title = "SutaHub",
-        Content = `เวอร์ชัน {config.Version} โหลดสำเร็จแล้วค่ะพี่เอฟ!`,
-        Duration = 5
-    })
+	Fluent:Notify({
+		Title = "SutaHub",
+		Content = `เวอร์ชัน {config.Version} โหลดสำเร็จแล้วค่ะพี่เอฟ!`,
+		Duration = 5,
+	})
 end
