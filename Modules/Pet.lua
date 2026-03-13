@@ -289,6 +289,7 @@ end
 function Pet.PetNightmare()
 	local mutant = Pet.GetPetMutation(Pet.targetUUID)
 	if mutant and mutant ~= "Nightmare" then
+		if mutant == "Normal" then return end
 		local petsPhysical = game.Workspace:WaitForChild("PetsPhysical")
 		for _, container in ipairs(petsPhysical:GetChildren()) do
 			local PetModel = container:FindFirstChild(Pet.targetUUID)
