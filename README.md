@@ -1,23 +1,36 @@
-# 🛠️ AI_Code Development Guide (คู่มือการพัฒนาต่อ)
+# SutaHub (AI_Code) - Grow a Garden Automation
 
-ยินดีต้อนรับสู่โปรเจกต์ **AI_Code**! นี่คือระบบ Modular Script สำหรับเกม EfHub ที่ได้รับการปรับปรุงใหม่ทั้งหมดเพื่อประสิทธิภาพ ความเสถียร และความง่ายในการพัฒนาต่อ
+สคริปต์บอทสำหรับเกม **Grow a Garden** บน Roblox พัฒนาด้วยโครงสร้างแบบ Modular Architecture แยกส่วนการทำงานชัดเจนเพื่อความเสถียร, ปรับแต่งง่าย, และมีประสิทธิภาพสูง
 
----
+## 🚀 ฟีเจอร์หลัก (Features)
 
-## 🔰 สำหรับผู้เริ่มต้น (Getting Started from Scratch)
-หากคุณเพิ่งเริ่มเขียนหรือใช้สคริปต์เป็นครั้งแรก ให้ทำตามขั้นตอนนี้ครับ:
+### 🌾 ระบบฟาร์ม (Farming Automation)
+*   **Multi-Worker Collection**: แยกเทรดการเก็บผลไม้เป็น 2 ชุด (`CollectFruit1`, `CollectFruit2`) เพื่อความรวดเร็วสูงสุด
+*   **Advanced Filtering**: ระบบกรองที่ละเอียดมาก สามารถเลือกเก็บเฉพาะ:
+    *   ชนิดผลไม้ (Fruit Type)
+    *   ประเภท Mutant (เช่น Glossy, Magnetic, Giant ฯลฯ)
+    *   ระดับความหายาก (Variant: Silver, Gold, Rainbow)
+    *   น้ำหนัก (Weight Condition)
+*   **Smart Planting**: ปลูกพืชอัตโนมัติในตำแหน่งผู้เล่น หรือตำแหน่งที่กำหนด
+*   **Tool Automation**: ใช้พลั่ว (Shovel), คราด (Trowel), และ Reclaim อัตโนมัติตามเงื่อนไข
+*   **Anti-Lag**: ระบบลดกราฟิกอัตโนมัติ (ลบเงา, น้ำ, Particle) เพื่อลดภาระเครื่อง
 
-1.  **เตรียม Executor**: คุณต้องมีโปรแกรมรันสคริปต์ (Executor) ที่รองรับการทำงานในเกม Roblox (เช่น Synapse, Wave, Solara หรือตัวอื่นๆ ที่คุณใช้อยู่)
-2.  **การรันครั้งแรก**: 
-    *   เปิดไฟล์ `Main.lua`
-    *   คัดลอก (Copy) โค้ดทั้งหมดในไฟล์
-    *   นำไปวางในหน้าต่างสคริปต์ของ Executor แล้วกด **Execute** (หรือ Run)
-3.  **วิธีเช็คสถานะ**: 
-    *   ในเกม Roblox ให้กดปุ่ม **F9** บนคีย์บอร์ดเพื่อเปิด Developer Console
-    *   ดูที่ช่อง **Log/Output**: หากเห็นคำว่า `AI_Code System Loaded Successfully!` แสดงว่าบอทพร้อมทำงานแล้วครับ
-4.  **การตั้งค่า**: เมื่อสคริปต์รันสำเร็จ จะมีหน้าต่างเมนูโผล่ขึ้นมา คุณสามารถเลือกฟังก์ชันที่ต้องการได้ทันที
+### 🐾 ระบบสัตว์เลี้ยง (Pet System)
+*   **Lifecycle Management**: จัดการวงจรชีวิตสัตว์เลี้ยงครบวงจร:
+    *   วางไข่ (Place Eggs) -> ฟักไข่ (Hatch) -> ขายตัวที่ไม่ต้องการ (Auto Sell)
+    *   รองรับ Whitelist/Blacklist สำหรับการขาย
+*   **Evolution Modes**:
+    *   **Nightmare**: ใส่ Shard และทำ Mutation อัตโนมัติ
+    *   **Mutant**: นำสัตว์เลี้ยงเข้าเครื่อง Mutate เมื่อเลเวลครบ
+    *   **Level/Elephant**: เก็บเมื่ออายุครบตามกำหนด
+*   **Maintenance**: ให้อาหารอัตโนมัติ (Auto Feed) ตามค่าความหิว
+*   **Auto Age Break**: นำสัตว์เลี้ยงไปทำ Age Break อัตโนมัติเมื่อถึงขีดจำกัด
 
----
+### 🛒 ระบบร้านค้า (Shop Sniper)
+*   **Reactive Buying**: ใช้ระบบ `DataStream` ดักจับข้อมูลจาก Server เพื่อซื้อของทันทีที่ Stock เข้า (เร็วกว่าการ Loop เช็ค)
+*   **Hardcore Mode**: โหมดกวาดซื้อของหายากแบบรัวๆ (Seeds, Gear, Eggs)
+*   **Traveling Merchant**: เลือกซื้อของจากพ่อค้าเร่อัตโนมัติ
+*   **Event Shop**: รองรับร้านค้าเทศกาล (Santa's Stash, New Year)
 
 ## 📂 โครงสร้างโฟลเดอร์ (Project Structure)
 เพื่อให้ระบบทำงานได้ถูกต้อง ไฟล์จะต้องถูกจัดเรียงดังนี้:
@@ -33,14 +46,19 @@ AI_Code/
     └── Event.lua       # ระบบกิจกรรม (Alien Event)
 ```
 
----
+## 🛠 โครงสร้างไฟล์ (Module Structure)
 
-## 🚀 วิธีการใช้งานระดับผู้ใช้ (User Guide)
-1. **การรันสคริปต์**: รันไฟล์ `Main.lua` เพียงไฟล์เดียว ระบบจะโหลดโมดูลอื่นๆ อัตโนมัติ
-2. **การบันทึกค่า**: ระบบใช้ `Fluent SaveManager` ค่าที่ตั้งไว้จะถูกเก็บใน `workspace/Fluent/Configs`
-3. **การทำงานเบื้องหลัง**: ทันทีที่กด Toggle ในเมนู ระบบจะเริ่มทำงานทันที (Real-time Sync)
+โปรเจกต์ถูกแบ่งออกเป็นโมดูลย่อย เพื่อความง่ายในการดูแลรักษา:
 
----
+| ไฟล์ | หน้าที่หลัก |
+| :--- | :--- |
+| **`Main.lua`** | จุดเริ่มต้น (Entry Point) โหลดโมดูล, เชื่อมต่อ UI กับ Logic, และจัดการ Loop หลัก |
+| **`Core.lua`** | ระบบพื้นฐาน (Utilities), Logger, Task Manager (`ToggleTask`), และ Service Wrappers |
+| **`UI.lua`** | สร้างหน้าต่างเมนูด้วย Fluent Library และจัดการระบบ Save/Load Config |
+| **`Farming.lua`** | Logic เกี่ยวกับพืช, การเก็บเกี่ยว, และการใช้เครื่องมือ |
+| **`Pet.lua`** | Logic สัตว์เลี้ยง, การจัดการ Inventory, และเครื่องจักรต่างๆ |
+| **`Shop.lua`** | Logic การซื้อของ และการดักจับ Remote Event ของร้านค้า |
+| **`Event.lua`** | Logic เฉพาะกิจสำหรับ Event (เช่น Alien) ที่ทำงานตามเงื่อนไขเวลา |
 
 ## 🌟 เจาะลึกฟีเจอร์ใหม่ที่ Antigravity เพิ่มให้ (How to use New Features)
 
