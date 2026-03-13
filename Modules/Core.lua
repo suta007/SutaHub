@@ -43,6 +43,8 @@ function Core.GetHumanoid()
 	return Core.GetCharacter():WaitForChild("Humanoid")
 end
 
+Core.Humanoid = Core.GetHumanoid()
+
 -- Logging System
 Core.MaxLines = 100
 Core.DisplayTable = {}

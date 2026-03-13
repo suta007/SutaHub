@@ -82,22 +82,26 @@ function Main.SyncBackgroundTasks()
 	local isEggTaskEnabled = GetOpt("tgPlaceEggsEn") or GetOpt("tgAutoHatchEn") or GetOpt("tgSellPetEn")
 	Core.ToggleTask("EggManagement", isEggTaskEnabled, function()
 		if GetOpt("tgPlaceEggsEn") then
-			pcall(Pet.PlaceEggs)
+			--pcall(Pet.PlaceEggs)
+			Pet.PlaceEggs()
 			task.wait(0.3)
 		end
 		if GetOpt("tgAutoHatchEn") then
-			pcall(Pet.HatchEgg)
+			--pcall(Pet.HatchEgg)
+			Pet.HatchEgg()
 			task.wait(0.3)
 		end
 		if GetOpt("tgSellPetEn") then
-			pcall(Pet.SellPetEgg)
+			--pcall(Pet.SellPetEgg)
+			Pet.SellPetEgg()
 			task.wait(0.3)
 		end
 		task.wait()
 	end)
 
 	Core.ToggleTask("ScanSellPetTask", GetOpt("tgSellPetEn"), function()
-		pcall(Pet.ScanSellPet)
+		--pcall(Pet.ScanSellPet)
+		Pet.ScanSellPet()
 		task.wait(2)
 	end)
 
