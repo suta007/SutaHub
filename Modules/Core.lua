@@ -30,7 +30,7 @@ Core.MyName = Core.LocalPlayer.Name
 Core.Backpack = Core.LocalPlayer:WaitForChild("Backpack")
 
 -- Core Variables
-Core.fVersion = "2569.03.13-Refactored"
+Core.fVersion = "2569.03.13-23.15"
 Core.DevMode = false
 Core.IsLoading = true
 Core.ActiveTasks = {}

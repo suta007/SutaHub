@@ -289,7 +289,7 @@ end
 function Pet.PetNightmare()
 	local mutant = Pet.GetPetMutation(Pet.targetUUID)
 	if mutant and mutant ~= "Nightmare" then
-		if mutant == "Normal" then return end
+		if mutant == "Normal" or mutant == "None" then return end
 		local petsPhysical = game.Workspace:WaitForChild("PetsPhysical")
 		for _, container in ipairs(petsPhysical:GetChildren()) do
 			local PetModel = container:FindFirstChild(Pet.targetUUID)
@@ -673,7 +673,7 @@ function Pet.BuildUI()
 		Callback = function(Value)
 			Core.QuickSave()
 			--pcall(Pet.Mutation)
-			Pet.Mutation()
+			if Pet.Mutation then Pet.Mutation() end
 			Sync()
 		end,
 	})
