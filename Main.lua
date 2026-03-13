@@ -17,6 +17,9 @@ end
 
 -- 1. Load All Core Modules
 local Core = LoadModule("Core")
+local CollapsibleSection = LoadModule("CollapsibleSection")
+if CollapsibleSection then CollapsibleSection(Core.Fluent) end
+
 local UI = LoadModule("UI")
 local Shop = LoadModule("Shop")
 local Farming = LoadModule("Farming")
@@ -25,6 +28,8 @@ local Event = LoadModule("Event")
 
 -- Safety Check: Ensure all modules loaded successfully
 if not Core or not UI or not Shop or not Farming or not Pet or not Event then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
+
+UI.InitSaveManager()
 
 -- 2. Sync Background Tasks (The Engine)
 function Main.SyncBackgroundTasks()
@@ -154,10 +159,9 @@ function Main.Init()
 		Core.VirtualUser:ClickButton2(Vector2.new())
 	end)
 
-	-- Final Setup
-	UI.InitSaveManager(Main.SyncBackgroundTasks)
-	Core.SuccessLog("AI_Code System Loaded Successfully!")
+	-- Setup Save Manager UI (without loading)
 end
 
 -- Run initialization
 Main.Init()
+Main.SyncBackgroundTasks()

@@ -32,7 +32,7 @@ function UI.Init(RefCore)
 		Log = UI.Window:AddTab({ Title = "Console", Icon = "terminal" }),
 		Settings = UI.Window:AddTab({ Title = "Settings", Icon = "settings" }),
 	}
-	
+
 	UI.Window:SelectTab(1)
 	UI.CreateToggleGui()
 	UI.CreateLogConsole()
@@ -97,32 +97,37 @@ function UI.GetSelectedItems(DropdownValue)
 	return Items
 end
 
-function UI.InitSaveManager(SyncBackgroundTasks)
-    UI.SyncBackgroundTasks = SyncBackgroundTasks
+function UI.InitSaveManager()
 	Core.SaveManager:SetLibrary(Core.Fluent)
 	Core.InterfaceManager:SetLibrary(Core.Fluent)
-	
+
 	Core.SaveManager:SetIgnoreIndexes({})
 	Core.InterfaceManager:SetFolder("EfHub")
 	Core.SaveManager:SetFolder("EfHub/GAG")
-	
+
 	Core.InterfaceManager:BuildInterfaceSection(UI.Tabs.Settings)
 	Core.SaveManager:BuildConfigSection(UI.Tabs.Settings)
-	
+
+	-- Load settings at the very end to prevent race conditions
 	task.spawn(function()
-		while not Core.SaveManager.Options.SaveManager_ConfigList do
+		-- Wait for the SaveManager UI to be ready
+		while not (Core.SaveManager.Options and Core.SaveManager.Options.SaveManager_ConfigList) do
 			task.wait()
 		end
+
+		-- Load the config, which will trigger UI callbacks
 		Core.SaveManager.Options.SaveManager_ConfigList:SetValue("EfHub")
 		Core.SaveManager:Load("EfHub")
-		task.wait(1)
+
+		-- Wait a moment for callbacks to fire before starting the main tasks
+		task.wait(0.5)
+
+		-- Mark loading as complete and start all background tasks based on the loaded settings
 		Core.IsLoading = false
-		if SyncBackgroundTasks then SyncBackgroundTasks() end
-		Core.Fluent:Notify({
-			Title = "EfHub",
-			Content = "Settings loaded automatically",
-			Duration = 3,
-		})
+
+		-- Notify user
+		Core.SuccessLog("AI_Code System Loaded Successfully!")
+		Core.Fluent:Notify({ Title = "EfHub", Content = "Settings loaded automatically", Duration = 3 })
 	end)
 end
 

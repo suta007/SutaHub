@@ -369,14 +369,14 @@ function Pet.findDupePet(mainUUID, targetType)
 						local isValid = true
 						if UI.Options.AAB_CheckAge.Value then
 							local aC, aV = UI.Options.AAB_AgeCond.Value, tonumber(UI.Options.AAB_AgeVal.Value) or 0
-							if aC == "<=" and petAge > aV then isValid = false end
-							if aC == ">=" and petAge < aV then isValid = false end
+							if aC == "Below" and petAge >= aV then isValid = false end
+							if aC == "Above" and petAge <= aV then isValid = false end
 						end
 						if isValid and UI.Options.AAB_CheckWeight.Value then
 							local cWeight = Pet.calculateCurrentWeight(uuid, petAge)
 							local wC, wV = UI.Options.AAB_WeightCond.Value, tonumber(UI.Options.AAB_WeightVal.Value) or 0
-							if wC == "<=" and cWeight > wV then isValid = false end
-							if wC == ">=" and cWeight < wV then isValid = false end
+							if wC == "Below" and cWeight >= wV then isValid = false end
+							if wC == "Above" and cWeight <= wV then isValid = false end
 						end
 						if isValid then return uuid end
 					end
@@ -793,8 +793,8 @@ function Pet.BuildUI()
 	})
 	AutoAgeBreakSection:AddDropdown("AAB_WeightCond", {
 		Title = "Weight Condition",
-		Values = { "<=", ">=" },
-		Default = "<=",
+		Values = { "Below", "Above" },
+		Default = "Below",
 		Callback = function(Value)
 			Core.QuickSave()
 			Sync()
@@ -820,8 +820,8 @@ function Pet.BuildUI()
 	})
 	AutoAgeBreakSection:AddDropdown("AAB_AgeCond", {
 		Title = "Age Condition",
-		Values = { "<=", ">=" },
-		Default = "<=",
+		Values = { "Below", "Above" },
+		Default = "Below",
 		Callback = function(Value)
 			Core.QuickSave()
 			Sync()
