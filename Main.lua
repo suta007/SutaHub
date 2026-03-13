@@ -119,9 +119,6 @@ function Main.Init()
 	Pet.Init(Core, UI, Farming) -- Pet depends on Farming
 	Event.Init(Core, UI, Pet) -- Event depends on Pet
 
-	-- Setup Save Manager UI (without loading)
-	UI.InitSaveManager()
-
 	-- Hook DataStream for reactive features
 	Core.DataStream.OnClientEvent:Connect(function(Type, Profile, Data)
 		if Type ~= "UpdateData" or not string.find(Profile, Core.MyName) or not Data then return end
@@ -159,8 +156,12 @@ function Main.Init()
 		Core.VirtualUser:CaptureController()
 		Core.VirtualUser:ClickButton2(Vector2.new())
 	end)
+
+	-- Setup Save Manager UI (without loading)
+	UI.InitSaveManager()
 end
 
 -- Run initialization
 Main.Init()
+task.wait(1)
 Main.SyncBackgroundTasks()
