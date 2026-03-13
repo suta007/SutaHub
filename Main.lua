@@ -1,9 +1,10 @@
+--!nocheck
 -- [[ AI_Code: Main Entry Point ]]
 local Main = {}
 
 -- [[ CONFIGURATION ]]
 local DevelopmentMode = false -- SET TO TRUE IF TESTING LOCALLY (Requires local file server)
-local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/Lua_EfHub/refs/heads/master/AI_Code/Modules/"
+local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/"
 
 local function LoadModule(name)
 	local success, result = pcall(function()

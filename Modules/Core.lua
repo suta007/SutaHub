@@ -1,13 +1,11 @@
+--!nocheck
 local Core = {}
 
 -- Load Libraries
 
---Core.Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/suta007/Lua_EfHub/refs/heads/master/FluentData/Renewed/Fluent.luau"))()
-Core.Fluent =  loadstring(game:HttpGet("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
+Core.Fluent = loadstring(game:HttpGet("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 Core.SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/SaveManager.luau"))()
 Core.InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/InterfaceManager.luau"))()
-Core.CollapsibleAddon = loadstring(game:HttpGet("https://raw.githubusercontent.com/suta007/Lua_EfHub/refs/heads/master/Core/CollapsibleSection.lua"))()
-Core.CollapsibleAddon(Core.Fluent)
 
 -- Services
 Core.Lighting = game:GetService("Lighting")
@@ -38,11 +36,11 @@ Core.IsLoading = true
 Core.ActiveTasks = {}
 
 function Core.GetCharacter()
-    return Core.LocalPlayer.Character or Core.LocalPlayer.CharacterAdded:Wait()
+	return Core.LocalPlayer.Character or Core.LocalPlayer.CharacterAdded:Wait()
 end
 
 function Core.GetHumanoid()
-    return Core.GetCharacter():WaitForChild("Humanoid")
+	return Core.GetCharacter():WaitForChild("Humanoid")
 end
 
 -- Logging System
@@ -52,11 +50,9 @@ Core.IsUpdateScheduled = false
 Core.LogDisplay = nil
 
 local function FlushLogUpdates()
-	if Core.LogDisplay then 
-        pcall(function()
-		    Core.LogDisplay:SetValue(table.concat(Core.DisplayTable, "\n"))
-	    end) 
-    end
+	if Core.LogDisplay then pcall(function()
+		Core.LogDisplay:SetValue(table.concat(Core.DisplayTable, "\n"))
+	end) end
 	Core.IsUpdateScheduled = false
 end
 
@@ -71,16 +67,24 @@ function Core.AddLog(message)
 	end
 end
 
-function Core.InfoLog(message) Core.AddLog("📋 " .. message) end
-function Core.WarnLog(message) Core.AddLog("⚠️ " .. message) end
-function Core.ErrorLog(message) Core.AddLog("❌ " .. message) end
-function Core.SuccessLog(message) Core.AddLog("✅ " .. message) end
-function Core.DevLog(message) Core.AddLog("💻 " .. message) end
+function Core.InfoLog(message)
+	Core.AddLog("📋 " .. message)
+end
+function Core.WarnLog(message)
+	Core.AddLog("⚠️ " .. message)
+end
+function Core.ErrorLog(message)
+	Core.AddLog("❌ " .. message)
+end
+function Core.SuccessLog(message)
+	Core.AddLog("✅ " .. message)
+end
+function Core.DevLog(message)
+	Core.AddLog("💻 " .. message)
+end
 
 function Core.DevNoti(content)
-	if Core.DevMode then
-		Core.DevLog(content)
-	end
+	if Core.DevMode then Core.DevLog(content) end
 end
 
 -- Tasks Manager
