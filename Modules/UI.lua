@@ -116,15 +116,20 @@ function UI.InitSaveManager()
 			task.wait()
 		end
 
+		-- Ensure UI is fully ready
+		task.wait(0.5)
+
 		-- Load the config, which will trigger UI callbacks
 		Core.SaveManager.Options.SaveManager_ConfigList:SetValue("EfHub")
-		Core.SaveManager:Load("EfHub")
-
-		-- Wait a moment for callbacks to fire before starting the main tasks
-		task.wait(0.5)
+		pcall(function()
+			Core.SaveManager:Load("EfHub")
+		end)
 
 		-- Mark loading as complete and start all background tasks based on the loaded settings
 		Core.IsLoading = false
+
+		-- Force a sync once loaded
+		if UI.SyncBackgroundTasks then UI.SyncBackgroundTasks() end
 
 		-- Notify user
 		Core.SuccessLog("AI_Code System Loaded Successfully!")

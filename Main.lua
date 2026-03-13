@@ -4,7 +4,7 @@ local Main = {}
 
 -- [[ CONFIGURATION ]]
 local DevelopmentMode = false -- SET TO TRUE IF TESTING LOCALLY (Requires local file server)
-local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/"
+local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/Lua_EfHub/refs/heads/master/Modules/"
 
 local function LoadModule(name)
 	local success, result = pcall(function()
@@ -30,82 +30,81 @@ local Event = LoadModule("Event")
 if not Core or not UI or not Shop or not Farming or not Pet or not Event then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
 
 -- 2. Sync Background Tasks (The Engine)
+-- Helper to safely get Option Value without errors if the UI element doesn't exist yet
+local function GetOpt(name)
+	if UI.Options and UI.Options[name] then return UI.Options[name].Value end
+	return false
+end
+
 function Main.SyncBackgroundTasks()
 	if not UI.Options then return end
-	local Options = UI.Options
 
 	-- Farming Tasks
-	Core.ToggleTask("AutoPlant", Options.tgPlantFruitEnable.Value, function()
+	Core.ToggleTask("AutoPlant", GetOpt("tgPlantFruitEnable"), function()
 		pcall(Farming.AutoPlant)
-		task.wait(tonumber(Options.inPlantDelay.Value) or 0.3)
+		task.wait(tonumber(GetOpt("inPlantDelay")) or 0.3)
 	end)
 
-	Core.ToggleTask("CollectFruit1", Options.tgCollectFruitEnable.Value, function()
+	Core.ToggleTask("CollectFruit1", GetOpt("tgCollectFruitEnable"), function()
 		Farming.CollectFruitWorker(1)
 	end)
-	Core.ToggleTask("CollectFruit2", Options.tgCollectFruitEnable2.Value, function()
+	Core.ToggleTask("CollectFruit2", GetOpt("tgCollectFruitEnable2"), function()
 		Farming.CollectFruitWorker(2)
 	end)
 
-	Core.ToggleTask("AutoSellALL", Options.tgAutoSellALL.Value, Farming.AutoSellAll)
-
-	-- NEW: Auto Sell Fruit specifically
-	Core.ToggleTask("AutoSellFruit", Options.AutoSellFruit.Value, function()
-		-- Logic handled in Farming.lua if needed, otherwise trigger here
-		task.wait(5)
-	end)
+	Core.ToggleTask("AutoSellALL", GetOpt("tgAutoSellALL"), Farming.AutoSellAll)
 
 	-- Tool Automation
-	Core.ToggleTask("ShovelPlant", Options.tgAutoPlantShovel.Value, Farming.ShovelPlant)
-	Core.ToggleTask("ShovelCrop", Options.tgAutoCropShovel and Options.tgAutoCropShovel.Value or false, function()
-		-- Implementation for Crop Shovel if needed
+	Core.ToggleTask("ShovelPlant", GetOpt("tgAutoPlantShovel"), Farming.ShovelPlant)
+	Core.ToggleTask("ShovelCrop", GetOpt("tgAutoCropShovel"), function()
+		-- Implementation for Crop Shovel (Placeholder / Future Logic)
 		task.wait(1)
 	end)
-	Core.ToggleTask("Reclaim", Options.tgReclaim.Value, Farming.Reclaim)
-	Core.ToggleTask("Trowel", Options.tgTrowel.Value, Farming.Trowel)
+	Core.ToggleTask("Reclaim", GetOpt("tgReclaim"), Farming.Reclaim)
+	Core.ToggleTask("Trowel", GetOpt("tgTrowel"), Farming.Trowel)
 
 	-- Pet Tasks
-	Core.ToggleTask("AutoFeedPet", Options.AutoFeedPet.Value, function()
+	Core.ToggleTask("AutoFeedPet", GetOpt("AutoFeedPet"), function()
 		pcall(Pet.FeedPet)
 		task.wait(10)
 	end)
 
-	Core.ToggleTask("PickFinishPet", Options.PetModeEnable.Value, Pet.PickFinishPet)
+	Core.ToggleTask("PickFinishPet", GetOpt("PetModeEnable"), Pet.PickFinishPet)
 
-	Core.ToggleTask("AutoAgeBreak", Options.AAB_Enabled.Value, function()
+	Core.ToggleTask("AutoAgeBreak", GetOpt("AAB_Enabled"), function()
 		pcall(Pet.processAgeBreakMachine)
 		task.wait(2)
 	end)
 
 	-- Egg Management (Grouped for performance)
-	local isEggTaskEnabled = Options.tgPlaceEggsEn.Value or Options.tgAutoHatchEn.Value or Options.tgSellPetEn.Value
+	local isEggTaskEnabled = GetOpt("tgPlaceEggsEn") or GetOpt("tgAutoHatchEn") or GetOpt("tgSellPetEn")
 	Core.ToggleTask("EggManagement", isEggTaskEnabled, function()
-		if Options.tgPlaceEggsEn.Value then pcall(Pet.PlaceEggs) end
-		if Options.tgAutoHatchEn.Value then pcall(Pet.HatchEgg) end
-		if Options.tgSellPetEn.Value then pcall(Pet.SellPetEgg) end
+		if GetOpt("tgPlaceEggsEn") then pcall(Pet.PlaceEggs) end
+		if GetOpt("tgAutoHatchEn") then pcall(Pet.HatchEgg) end
+		if GetOpt("tgSellPetEn") then pcall(Pet.SellPetEgg) end
 		task.wait(0.5)
 	end)
 
-	Core.ToggleTask("ScanSellPetTask", Options.tgSellPetEn.Value, function()
+	Core.ToggleTask("ScanSellPetTask", GetOpt("tgSellPetEn"), function()
 		pcall(Pet.ScanSellPet)
 		task.wait(2)
 	end)
 
 	-- Event Tasks
-	Core.ToggleTask("AlienEvent", Options.tgAlienEventEnable.Value, Event.AlienEvent)
-	Core.ToggleTask("CatchAlien", Options.tgAlienEventEnable.Value, function()
+	Core.ToggleTask("AlienEvent", GetOpt("tgAlienEventEnable"), Event.AlienEvent)
+	Core.ToggleTask("CatchAlien", GetOpt("tgAlienEventEnable"), function()
 		pcall(Event.CatchAlien)
 		task.wait(5)
 	end)
-	Core.ToggleTask("CheckAlienPet", Options.tgAlienAutoHatch.Value, function()
+	Core.ToggleTask("CheckAlienPet", GetOpt("tgAlienAutoHatch"), function()
 		pcall(Event.CheckAlienPet)
 		task.wait(10)
 	end)
-	Core.ToggleTask("AutoAlienClaim", Options.tgAlienAutoClaim.Value, Event.AutoAlienClaim)
-	Core.ToggleTask("AutoGiftAlien", Options.tgAutoGiftAlien.Value, Event.AutoGiftAlien)
+	Core.ToggleTask("AutoAlienClaim", GetOpt("tgAlienAutoClaim"), Event.AutoAlienClaim)
+	Core.ToggleTask("AutoGiftAlien", GetOpt("tgAutoGiftAlien"), Event.AutoGiftAlien)
 
 	-- Shop Tasks
-	Core.ToggleTask("HardCoreBuy", Options.HardCoreBuyEnable.Value, Shop.HardCoreBuy)
+	Core.ToggleTask("HardCoreBuy", GetOpt("HardCoreBuyEnable"), Shop.HardCoreBuy)
 end
 
 -- 3. Initialization
@@ -133,18 +132,18 @@ function Main.Init()
 			end) end
 
 			-- Sync Pet Progress
-			if UI.Options.PetModeEnable.Value then
+			if GetOpt("PetModeEnable") then
 				task.spawn(function()
 					if string.find(Key, "ROOT/GardenGuide/PetData") or Key == "ROOT/BadgeData/PetMaster" then
-						if UI.Options.PetMode.Value == "Nightmare" then
+						if GetOpt("PetMode") == "Nightmare" then
 							Pet.PetNightmare()
-						elseif UI.Options.PetMode.Value == "Mutant" then
+						elseif GetOpt("PetMode") == "Mutant" then
 							Pet.CheckMakeMutant()
 						else
 							Pet.Mutation()
 						end
 					elseif Key == "ROOT/PetMutationMachine/PetReady" then
-						if Pet.Mutanting and UI.Options.PetMode.Value == "Mutant" then Pet.ClaimMutantPet() end
+						if Pet.Mutanting and GetOpt("PetMode") == "Mutant" then Pet.ClaimMutantPet() end
 					end
 				end)
 			end
@@ -163,5 +162,3 @@ end
 
 -- Run initialization
 Main.Init()
-task.wait(1)
-Main.SyncBackgroundTasks()
