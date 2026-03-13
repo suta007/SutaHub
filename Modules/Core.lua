@@ -38,6 +38,7 @@ Core.ActiveTasks = {}
 function Core.GetCharacter()
 	return Core.LocalPlayer.Character or Core.LocalPlayer.CharacterAdded:Wait()
 end
+Core.Character = Core.GetCharacter()
 
 function Core.GetHumanoid()
 	return Core.GetCharacter():WaitForChild("Humanoid")
