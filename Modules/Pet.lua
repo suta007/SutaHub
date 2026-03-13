@@ -672,7 +672,8 @@ function Pet.BuildUI()
 		Default = false,
 		Callback = function(Value)
 			Core.QuickSave()
-			pcall(Pet.Mutation)
+			--pcall(Pet.Mutation)
+			Pet.Mutation()
 			Sync()
 		end,
 	})

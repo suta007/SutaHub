@@ -207,6 +207,8 @@ function Main.InitAction()
 		local NewYearStocks = GetData_result.EventShopStock["New Years Shop"].Stocks
 		if type(NewYearStocks) == "table" and next(NewYearStocks) ~= nil then Shop.ProcessBuy(Shop.ShopKey.NewYear, NewYearStocks) end
 	end
+
+	if GetOpt("PetModeEnable") then Pet.Mutation() end
 end
 
 -- Run initialization
