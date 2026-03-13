@@ -459,7 +459,7 @@ function Farming.BuildUI()
 			pcall(Farming.ApplyAntiLag)
 		end,
 	})
-	Tabs.Main:AddToggle("FruitToggle", {
+	Tabs.Main:AddToggle("tgHideFruitToggle", {
 		Title = "Hide Fruits",
 		Default = false,
 		Callback = function(Value)
@@ -467,7 +467,7 @@ function Farming.BuildUI()
 			Farming.HideFruit(Value)
 		end,
 	})
-	Tabs.Main:AddToggle("PlantToggle", {
+	Tabs.Main:AddToggle("tgHidePlantToggle", {
 		Title = "Hide Plants",
 		Default = false,
 		Callback = function(Value)

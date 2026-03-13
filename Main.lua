@@ -4,7 +4,9 @@ local Main = {}
 
 -- [[ CONFIGURATION ]]
 local DevelopmentMode = false -- SET TO TRUE IF TESTING LOCALLY (Requires local file server)
-local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/Lua_EfHub/refs/heads/master/Modules/"
+
+-- ใช้ https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/ ห้ามเปลี่ยน!!!!
+local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/"
 
 local function LoadModule(name)
 	local success, result = pcall(function()
@@ -90,19 +92,6 @@ function Main.SyncBackgroundTasks()
 		task.wait(2)
 	end)
 
-	-- Event Tasks
-	Core.ToggleTask("AlienEvent", GetOpt("tgAlienEventEnable"), Event.AlienEvent)
-	Core.ToggleTask("CatchAlien", GetOpt("tgAlienEventEnable"), function()
-		pcall(Event.CatchAlien)
-		task.wait(5)
-	end)
-	Core.ToggleTask("CheckAlienPet", GetOpt("tgAlienAutoHatch"), function()
-		pcall(Event.CheckAlienPet)
-		task.wait(10)
-	end)
-	Core.ToggleTask("AutoAlienClaim", GetOpt("tgAlienAutoClaim"), Event.AutoAlienClaim)
-	Core.ToggleTask("AutoGiftAlien", GetOpt("tgAutoGiftAlien"), Event.AutoGiftAlien)
-
 	-- Shop Tasks
 	Core.ToggleTask("HardCoreBuy", GetOpt("HardCoreBuyEnable"), Shop.HardCoreBuy)
 end
@@ -160,5 +149,54 @@ function Main.Init()
 	UI.InitSaveManager()
 end
 
+function Main.InitAction()
+	if GetOpt("tgHideFruitToggle") then Farming.HideFruit(true) end
+	if GetOpt("tgHidePlantToggle") then Farming.HidePlant(true) end
+	if GetOpt("PetModeEnable") then Pet.Mutation() end
+	if GetOpt("HardCoreBuyEnable") then Shop.HardCoreBuy() end
+	if GetOpt("buySeedEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local SeedStocks = GetData_result.SeedStocks.Shop.Stocks
+		if type(SeedStocks) == "table" and next(SeedStocks) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Seed, SeedStocks) end
+	end
+
+	if GetOpt("buyDailyEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local DailyStocks = GetData_result.SeedStocks["Daily Deals"].Stocks
+		if type(DailyStocks) == "table" and next(DailyStocks) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Daily, DailyStocks) end
+	end
+
+	if GetOpt("buyGearEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local GearStock = GetData_result.GearStock.Stocks
+		if type(GearStock) == "table" and next(GearStock) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Gear, GearStock) end
+	end
+
+	if GetOpt("buyEggEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local EggStock = GetData_result.PetEggStock.Stocks
+		if type(EggStock) == "table" and next(EggStock) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Egg, EggStock) end
+	end
+
+	if GetOpt("buyTravelingEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local TravelingStock = GetData_result.TravelingMerchantShopStock.Stocks
+		if type(TravelingStock) == "table" and next(TravelingStock) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Traveling, TravelingStock) end
+	end
+
+	if GetOpt("buySantaEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local SantaStocks = GetData_result.EventShopStock["Santa's Stash"].Stocks
+		if type(SantaStocks) == "table" and next(SantaStocks) ~= nil then Shop.ProcessBuy(Shop.ShopKey.Santa, SantaStocks) end
+	end
+	if GetOpt("buyNewYearEnable") then
+		local GetData_result = Core.DataService:GetData()
+		local NewYearStocks = GetData_result.EventShopStock["New Years Shop"].Stocks
+		if type(NewYearStocks) == "table" and next(NewYearStocks) ~= nil then Shop.ProcessBuy(Shop.ShopKey.NewYear, NewYearStocks) end
+	end
+end
+
 -- Run initialization
 Main.Init()
+task.wait(2)
+task.spawn(Main.InitAction)

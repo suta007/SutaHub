@@ -303,10 +303,11 @@ function Shop.BuildUI()
 			Sync()
 		end,
 	})
+	local tCount = 1
 
 	local function TravelSelected()
 		local selected = {}
-		for i = 1, 10 do -- Assuming max 10 traveling merchant types
+		for i = 1, tCount do -- Assuming max 10 traveling merchant types
 			local dd = Options["TravelingList" .. i]
 			if dd then
 				local items = UI.GetSelectedItems(dd.Value)
@@ -339,6 +340,7 @@ function Shop.BuildUI()
 				Sync()
 			end,
 		})
+		tCount = t
 		t = t + 1
 	end
 

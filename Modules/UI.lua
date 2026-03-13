@@ -11,7 +11,7 @@ function UI.Init(RefCore, SyncTask)
 	UI.SyncBackgroundTasks = SyncTask
 	UI.Window = Core.Fluent:CreateWindow({
 		Title = "Grow a Garden " .. Core.fVersion,
-		SubTitle = "by EfHub",
+		SubTitle = "by SutaHub",
 		TabWidth = 100,
 		Size = UDim2.fromOffset(1400, 900),
 		Resize = true,
@@ -67,7 +67,7 @@ function UI.CreateToggleGui()
 	ToggleButton.BackgroundColor3 = Color3.fromRGB(101, 1, 1)
 	ToggleButton.Position = UDim2.new(0, 10, 0.5, 0)
 	ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-	ToggleButton.Text = "EfHub"
+	ToggleButton.Text = "SutaHub"
 	ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 	ToggleButton.Draggable = true
 
@@ -133,7 +133,7 @@ function UI.InitSaveManager()
 
 		-- Notify user
 		Core.SuccessLog("AI_Code System Loaded Successfully!")
-		Core.Fluent:Notify({ Title = "EfHub", Content = "Settings loaded automatically", Duration = 3 })
+		Core.Fluent:Notify({ Title = "SutaHub", Content = "Settings loaded automatically", Duration = 3 })
 	end)
 end
 
