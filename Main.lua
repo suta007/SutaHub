@@ -29,8 +29,6 @@ local Event = LoadModule("Event")
 -- Safety Check: Ensure all modules loaded successfully
 if not Core or not UI or not Shop or not Farming or not Pet or not Event then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
 
-UI.InitSaveManager()
-
 -- 2. Sync Background Tasks (The Engine)
 function Main.SyncBackgroundTasks()
 	if not UI.Options then return end
@@ -115,11 +113,14 @@ function Main.Init()
 	print("AI_Code System: Initializing Components...")
 
 	-- Start Modules
-	UI.Init(Core)
+	UI.Init(Core, Main.SyncBackgroundTasks)
 	Shop.Init(Core, UI) -- Shop has no external module dependencies
 	Farming.Init(Core, UI) -- Farming has no external module dependencies
 	Pet.Init(Core, UI, Farming) -- Pet depends on Farming
 	Event.Init(Core, UI, Pet) -- Event depends on Pet
+
+	-- Setup Save Manager UI (without loading)
+	UI.InitSaveManager()
 
 	-- Hook DataStream for reactive features
 	Core.DataStream.OnClientEvent:Connect(function(Type, Profile, Data)
@@ -158,8 +159,6 @@ function Main.Init()
 		Core.VirtualUser:CaptureController()
 		Core.VirtualUser:ClickButton2(Vector2.new())
 	end)
-
-	-- Setup Save Manager UI (without loading)
 end
 
 -- Run initialization

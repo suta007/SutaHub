@@ -6,8 +6,9 @@ UI.Window = nil
 UI.Tabs = {}
 UI.SyncBackgroundTasks = nil
 
-function UI.Init(RefCore)
+function UI.Init(RefCore, SyncTask)
 	Core = RefCore
+	UI.SyncBackgroundTasks = SyncTask
 	UI.Window = Core.Fluent:CreateWindow({
 		Title = "Grow a Garden " .. Core.fVersion,
 		SubTitle = "by EfHub",
