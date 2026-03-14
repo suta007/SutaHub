@@ -26,10 +26,11 @@ local UI = LoadModule("UI")
 local Shop = LoadModule("Shop")
 local Farming = LoadModule("Farming")
 local Pet = LoadModule("Pet")
-local Event = LoadModule("Event")
+local EF = LoadModule("EF")
+--local Event = LoadModule("Event")
 
 -- Safety Check: Ensure all modules loaded successfully
-if not Core or not UI or not Shop or not Farming or not Pet or not Event then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
+if not Core or not UI or not Shop or not Farming or not Pet then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
 
 -- 2. Sync Background Tasks (The Engine)
 -- Helper to safely get Option Value without errors if the UI element doesn't exist yet
@@ -118,7 +119,8 @@ function Main.Init()
 	Shop.Init(Core, UI) -- Shop has no external module dependencies
 	Farming.Init(Core, UI) -- Farming has no external module dependencies
 	Pet.Init(Core, UI, Farming) -- Pet depends on Farming
-	Event.Init(Core, UI, Pet) -- Event depends on Pet
+	EF.Init(Core) -- EF depends on Core
+	--Event.Init(Core, UI, Pet) -- Event depends on Pet
 
 	-- Hook DataStream for reactive features
 	Core.DataStream.OnClientEvent:Connect(function(Type, Profile, Data)
@@ -214,4 +216,5 @@ end
 -- Run initialization
 Main.Init()
 task.wait(2)
+EF.Teleport_UI()
 task.spawn(Main.InitAction)

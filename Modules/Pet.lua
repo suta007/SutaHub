@@ -672,8 +672,8 @@ function Pet.BuildUI()
 		Default = false,
 		Callback = function(Value)
 			Core.QuickSave()
-			--pcall(Pet.Mutation)
-			if Pet.Mutation then Pet.Mutation() end
+			pcall(Pet.Mutation)
+			--if Pet.Mutation then Pet.Mutation() end
 			Sync()
 		end,
 	})

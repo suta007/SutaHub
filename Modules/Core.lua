@@ -18,6 +18,8 @@ Core.Players = game:GetService("Players")
 Core.GameEvents = Core.ReplicatedStorage:WaitForChild("GameEvents")
 Core.DataStream = Core.GameEvents:WaitForChild("DataStream")
 Core.CollectEvent = Core.ReplicatedStorage.GameEvents.Crops.Collect
+Core.LocalPlayer = Core.Players.LocalPlayer
+Core.PlayerGui = Core.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Game Modules
 Core.DataService = require(Core.ReplicatedStorage.Modules.DataService)
