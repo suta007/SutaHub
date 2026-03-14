@@ -4,6 +4,7 @@ local Main = {}
 
 -- [[ CONFIGURATION ]]
 local DevelopmentMode = false -- SET TO TRUE IF TESTING LOCALLY (Requires local file server)
+local CurrentEvents = {} -- ใส่ชื่อ Event ที่ต้องการโหลด เช่น {"Alien", "Christmas"} หรือปล่อยว่าง {} ถ้าไม่มี Event
 
 -- ใช้ https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/ ห้ามเปลี่ยน!!!!
 local BasePath = DevelopmentMode and "http://127.0.0.1:5500/AI_Code/Modules/" or "https://raw.githubusercontent.com/suta007/SutaHub/refs/heads/master/Modules/"
@@ -26,11 +27,17 @@ local UI = LoadModule("UI")
 local Shop = LoadModule("Shop")
 local Farming = LoadModule("Farming")
 local Pet = LoadModule("Pet")
-local EF = LoadModule("EF")
---local Event = LoadModule("Event")
+local EF = LoadModule("Ef")
+
+-- Load Dynamic Events
+local ActiveEventModules = {}
+for _, EventName in ipairs(CurrentEvents) do
+	local EvMod = LoadModule("Events/" .. EventName) -- โหลดไฟล์จากโฟลเดอร์ Modules/Events/
+	if EvMod then table.insert(ActiveEventModules, EvMod) end
+end
 
 -- Safety Check: Ensure all modules loaded successfully
-if not Core or not UI or not Shop or not Farming or not Pet then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
+if not Core or not UI or not Shop or not Farming or not Pet or not EF then return warn("AI_Code Error: One or more modules failed to load. Script execution stopped.") end
 
 -- 2. Sync Background Tasks (The Engine)
 -- Helper to safely get Option Value without errors if the UI element doesn't exist yet
@@ -120,7 +127,10 @@ function Main.Init()
 	Farming.Init(Core, UI) -- Farming has no external module dependencies
 	Pet.Init(Core, UI, Farming) -- Pet depends on Farming
 	EF.Init(Core) -- EF depends on Core
-	--Event.Init(Core, UI, Pet) -- Event depends on Pet
+
+	for _, EvMod in ipairs(ActiveEventModules) do
+		if EvMod.Init then EvMod.Init(Core, UI, Pet) end
+	end
 
 	-- Hook DataStream for reactive features
 	Core.DataStream.OnClientEvent:Connect(function(Type, Profile, Data)

@@ -5,7 +5,7 @@ function EF.Init(RefCore)
 end
 
 function EF.Teleport_UI()
-	local TeleportUI = Core.PlayerGui:WaitForChild("Teleport_UI"):WaitForChild("Frame")
+	local TeleportUI = Core.LocalPlayer.PlayerGui:WaitForChild("Teleport_UI"):WaitForChild("Frame")
 	local PetButton = TeleportUI:WaitForChild("Pets")
 	local GearButton = TeleportUI:WaitForChild("Gear")
 	PetButton.Visible = true
